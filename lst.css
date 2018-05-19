@@ -1,0 +1,29 @@
+#lst_clock {
+    position: relative;
+    margin-bottom: 4em;
+}
+
+div#azimuth {
+    position: absolute;
+    text-align: left;
+    bottom: 0;
+    left: 0;
+}
+
+div#elevation {
+    position: absolute;
+    text-align: right;
+    bottom: 0;
+    right: 0;
+}
+
+div#digital {
+    position: absolute;
+    top: 96px;
+    left: 0;
+    width: 100%;
+    font-size: 64px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 3px 3px 5px #094bad;
+}
