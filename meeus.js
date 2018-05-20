@@ -1,3 +1,5 @@
+'use strict';
+
 ﻿function positionSun(JDE, lat, lon) {
   const heliocentric = positionEarth(JDE)
 

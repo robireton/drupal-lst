@@ -1,5 +1,7 @@
+'use strict';
+
 Drupal.behaviors.lst = {
-  attach: function(context, settings) {
+  attach: (context, settings) => {
     navigator.geolocation.getCurrentPosition(
       position => {
         window.setInterval(() => {
