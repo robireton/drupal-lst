@@ -1,5 +1,5 @@
 name = Local Solar Time
 description = time based on the position of the sun at your location
 core = 7.x
-version=7.x-2.1
+version=7.x-2.2
 package = Rob Ireton

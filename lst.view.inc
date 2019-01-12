@@ -12,8 +12,8 @@ function lst_view() {
   <svg id="analog" width="100%" height="100%" viewbox="0 0 320 320" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(160, 160)">
   <g id="face">
-  <circle cx="0" cy="0" r="158" stroke="black" stroke-width="2" fill="#381fa6" stroke-opacity="1" fill-opacity="0.38"/>
-  <g id="hour_marks" stroke-width="3" stroke="black" stroke-opacity="1">
+  <circle cx="0" cy="0" r="158" stroke="#241F20" stroke-width="2" fill="rgb(142, 166, 31)" stroke-opacity="1" fill-opacity="0.38"/>
+  <g id="hour_marks" stroke-width="3" stroke="#241F20" stroke-opacity="1">
   <line x1="0" y1="-145" x2="0" y2="-155" transform="rotate(0)"/>
   <line x1="0" y1="-145" x2="0" y2="-155" transform="rotate(30)"/>
   <line x1="0" y1="-145" x2="0" y2="-155" transform="rotate(60)"/>
@@ -27,7 +27,7 @@ function lst_view() {
   <line x1="0" y1="-145" x2="0" y2="-155" transform="rotate(300)"/>
   <line x1="0" y1="-145" x2="0" y2="-155" transform="rotate(330)"/>
   </g>
-  <g id="minute_marks" stroke-width="2" stroke="black" stroke-opacity="0.62">
+  <g id="minute_marks" stroke-width="2" stroke="#241F20" stroke-opacity="0.62">
   <line x1="0" y1="-151" x2="0" y2="-155" transform="rotate(6)"/>
   <line x1="0" y1="-151" x2="0" y2="-155" transform="rotate(12)"/>
   <line x1="0" y1="-151" x2="0" y2="-155" transform="rotate(18)"/>
@@ -91,20 +91,20 @@ function lst_view() {
   <polygon points="-2,-7 0,-14 2,-7" transform="rotate(270)"/>
   <polygon points="-2,-7 0,-14 2,-7" transform="rotate(300)"/>
   <polygon points="-2,-7 0,-14 2,-7" transform="rotate(330)"/>
-  <circle cx="0" cy="0" r="7" fill="gold" stroke-width="1" stroke="darkorange" fill-opacity="1"/>
+  <circle cx="0" cy="0" r="7" fill="#EAD665" stroke-width="1" stroke="#D09B2C" fill-opacity="1"/>
   </g>
-  <circle id="horizon" cx="0" cy="0" r="90" fill="#381fa6" stroke="#525252" stroke-width="1" stroke-opacity="0.38" fill-opacity="0.25"/>
+  <circle id="horizon" cx="0" cy="0" r="90" fill="rgb(142, 166, 31)" stroke="#52991D" stroke-width="1" stroke-opacity="0.62" fill-opacity="0.25"/>
   <g id="hour">
-  <line x1="0" y1="15" x2="0" y2="-105" stroke-width="5" stroke="black"/>
+  <line x1="0" y1="15" x2="0" y2="-105" stroke-width="5" stroke="#252024"/>
   </g>
   <g id="minute">
-  <line x1="0" y1="20" x2="0" y2="-143" stroke-width="3" stroke="black"/>
-  <circle cx="0" cy="0" r="5" fill="black"/>
+  <line x1="0" y1="20" x2="0" y2="-143" stroke-width="3" stroke="#433635"/>
+  <circle cx="0" cy="0" r="5" fill="#241F20"/>
   </g>
   <g id="second">
-  <line x1="0" y1="25" x2="0" y2="-147" stroke-width="2" stroke="#a61f4a"/>
-  <circle cx="0" cy="0" r="2.5" fill="grey"/>
-  <polygon points="2,0 1,-1.732 -1,-1.732 -2,0 -1,1.732 1,1.732" stroke-width="0.2" stroke="black" fill="none"/>
+  <line x1="0" y1="25" x2="0" y2="-147" stroke-width="2" stroke="#9B1D41"/>
+  <circle cx="0" cy="0" r="2.5" fill="#555152"/>
+  <polygon points="2,0 1,-1.732 -1,-1.732 -2,0 -1,1.732 1,1.732" stroke-width="0.2" stroke="#241F20" fill="none"/>
   </g>
   </g>
   </svg>
@@ -114,6 +114,6 @@ function lst_view() {
   <h2>Why</h2>
   <p>One of my goals in life is to get off of, not just <a href="//www.youtube.com/watch?v=84aWtseb2-4">daylight saving time</a>, but standard time as well. I made this app as a tool to evaluate the feasibility of that goal. Standard time may have been good for railroads and telegraphs, but in many parts of the world it really obscures the relationship between our day and what is going on in the sky. Our devices are smart enough now to let us use local time and still travel or communicate globally.</p>
   <h2>How</h2>
-  <p>Once you provide your location, the app adjusts <abbr title="Universal Coordinated Time">UTC</abbr> for your longitude and for the <a href="//www.google.com/search?q=equation+of+time">Equation of Time</a>. It displays the results on a <abbr title="scalable vector graphics">SVG</abbr> clock face. An icon of the sun is displayed with the azimuth increasing <em>clockwise</em> from the bottom (south is at the top). The sun&#8217;s elevation is shown relative to a circular horizon in the middle of the clock face. Just watch it for a while; it should make sense.</p>
+  <p>Once you provide your location, the app adjusts <abbr title="Universal Coordinated Time">UTC</abbr> for your longitude and for the <a href="//www.google.com/search?q=equation+of+time">Equation of Time</a>. It displays the results on a <abbr title="scalable vector graphics">SVG</abbr> clock face. An icon of the sun is displayed with the azimuth increasing <em>clockwise</em> from the bottom (south is at the top). The sun’s elevation is shown relative to a circular horizon in the middle of the clock face. Just watch it for a while; it should make sense.</p>
 END_OF_TEXT;
 }
