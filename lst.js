@@ -6,33 +6,101 @@ Drupal.behaviors.lst = {
       const t0 = Date.now() - performance.now()
       navigator.geolocation.getCurrentPosition(
         position => {
+          function getClockHandAngles(local, tick = false) {
+            let second = ((local*60 - Math.floor(local*60))*60)
+
+            return {
+              hour: local * 360 / 12,
+              minute: (local - Math.floor(local / 24)) * 360,
+              second: (tick ? Math.floor(second) : second) * 6,
+            }
+          }
+
+          function getSunIconPosition(a, h, r0 = 90, Δr = 40) {
+            const azimuth   = a.DegreesToRadians()
+            const elevation = h.DegreesToRadians()
+            const r = r0 + Δr*Math.sin(elevation)
+
+            return {
+              x: -r * Math.sin(azimuth),
+              y:  r * Math.cos(azimuth),
+            }
+          }
+
+          function findNoon() {
+            const Δt = 360000 //milliseconds
+            let x = {t: t0, a: positionSun((new Date(t0)).toJDE(), position.coords.latitude, position.coords.longitude).A}
+            let y, t_noon
+            if (x.a < 180) {
+              y = {t: x.t+Δt, a: positionSun((new Date(x.t+Δt)).toJDE(), position.coords.latitude, position.coords.longitude).A}
+              while (y.a < 180) {
+                x = y
+                y = {t: x.t+Δt, a: positionSun((new Date(x.t+Δt)).toJDE(), position.coords.latitude, position.coords.longitude).A}
+              }
+            }
+            else {
+              y = {t: x.t-Δt, a: positionSun((new Date(x.t-Δt)).toJDE(), position.coords.latitude, position.coords.longitude).A}
+              while (y.a > 180) {
+                x = y
+                y = {t: x.t-Δt, a: positionSun((new Date(x.t-Δt)).toJDE(), position.coords.latitude, position.coords.longitude).A}
+              }
+            }
+            return y.t + (180 - y.a)*((x.t-y.t)/(x.a-y.a)) // linear interpolation
+          }
+
+          function addEclipticDot(t, azimuth, elevation) {
+            const pos = getSunIconPosition(azimuth, elevation)
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+            dot.setAttribute('cx', pos.x)
+            dot.setAttribute('cy', pos.y)
+            dot.setAttribute('r', 1.25+elevation/90/2)
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title')
+            title.textContent = `${(new Date(t)).toTimeString()}; azimuth: ${azimuth.DDtoDMS()}; elevation: ${elevation.DDtoDMS()}`
+            dot.appendChild(title)
+            document.getElementById('ecliptic').appendChild(dot)
+          }
+
           function updateDisplay(timestamp) {
             const t = new Date(t0 + timestamp)
             const sun = positionSun(t.toJDE(), position.coords.latitude, position.coords.longitude)
             const local = ((t.getUTCHours() + t.getUTCMinutes()/60 + t.getUTCSeconds()/3600 + t.getUTCMilliseconds()/3600000 + position.coords.longitude * 24 / 360 + sun.E/60)*15).normalizedDegrees()/15
 
-            const hour_angle = local * 360 / 12
-            document.getElementById('hour').setAttribute('transform', `rotate(${hour_angle})`)
+            const angles = getClockHandAngles(local)
+            document.getElementById('hour').setAttribute('transform', `rotate(${angles.hour})`)
+            document.getElementById('minute').setAttribute('transform', `rotate(${angles.minute})`)
+            document.getElementById('second').setAttribute('transform', `rotate(${angles.second})`)
 
-            const minute_angle = (local - Math.floor(local / 24)) * 360
-            document.getElementById('minute').setAttribute('transform', `rotate(${minute_angle})`)
-
-            // const second_angle = Math.floor((local*60 - Math.floor(local*60))*60) * 6 //discrete ticks
-            const second_angle = ((local*60 - Math.floor(local*60))*60) * 6 //sweep seconds
-            document.getElementById('second').setAttribute('transform', `rotate(${second_angle})`)
-
-            const azimuth = sun.A.DegreesToRadians()
-            const elevation = sun.h.DegreesToRadians()
-            const r = 90 + 40*Math.sin(elevation)
-            const x = r * Math.sin(azimuth)
-            const y = r * Math.cos(azimuth)
-
-            document.getElementById('sun').setAttribute('transform', `translate(${-x} ${y})`)
+            const pos = getSunIconPosition(sun.A, sun.h)
+            document.getElementById('sun').setAttribute('transform', `translate(${pos.x} ${pos.y})`)
             document.getElementById('azimuth').innerHTML = `azimuth:<br><b>${sun.A.DDtoDMS()}</b>`
             document.getElementById('elevation').innerHTML = `elevation:<br><b>${sun.h.DDtoDMS()}</b>`
 
             window.requestAnimationFrame(updateDisplay)
           }
+
+          (function () {
+            const Δt = 24 * 60 * 60 * 1000 / 113 // number of milliseconds to give 113 ticks per circle
+            const t_noon = findNoon()
+            const dots = []
+            let t = t_noon
+            let sun = positionSun((new Date(t)).toJDE(), position.coords.latitude, position.coords.longitude)
+
+            const A0 = sun.A
+            while (sun.A <= A0) {
+              dots.push({t: t, a: sun.A, h: sun.h})
+              t -= Δt
+              sun = positionSun((new Date(t)).toJDE(), position.coords.latitude, position.coords.longitude)
+            }
+            t = t_noon + Δt
+            sun = positionSun((new Date(t)).toJDE(), position.coords.latitude, position.coords.longitude)
+            while (sun.A > A0) {
+              dots.push({t: t, a: sun.A, h: sun.h})
+              t += Δt
+              sun = positionSun((new Date(t)).toJDE(), position.coords.latitude, position.coords.longitude)
+            }
+            dots.sort((a,b) => a.t - b.t) // sorting only makes the DOM tidyier; makes no visual difference
+            for (const d of dots) addEclipticDot(d.t, d.a, d.h)
+          })()
 
           window.requestAnimationFrame(updateDisplay)
         },

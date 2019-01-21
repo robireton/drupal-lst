@@ -78,6 +78,7 @@ function lst_view() {
   <line x1="0" y1="-151" x2="0" y2="-155" transform="rotate(354)"/>
   </g>
   </g>
+  <g id="ecliptic" stroke="none" fill="#241F20" fill-opacity="0.14"/>
   <g id="sun" stroke="none" fill="white" fill-opacity="0.62">
   <polygon points="-2,-7 0,-14 2,-7" transform="rotate(0)"/>
   <polygon points="-2,-7 0,-14 2,-7" transform="rotate(30)"/>
@@ -99,7 +100,7 @@ function lst_view() {
   </g>
   <g id="minute">
   <line x1="0" y1="20" x2="0" y2="-143" stroke-width="3" stroke="#433635"/>
-  <circle cx="0" cy="0" r="5" fill="#241F20"/>
+  <circle cx="0" cy="0" r="5" fill="#433635"/>
   </g>
   <g id="second">
   <line x1="0" y1="25" x2="0" y2="-147" stroke-width="2" stroke="#9B1D41"/>
